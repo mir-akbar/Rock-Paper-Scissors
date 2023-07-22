@@ -4,85 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
     <title>Rock Paper Scissors</title>
 </head>
 
 <body>
-    <script>
-        const choices = ['rock', 'paper', 'scissors'];
-        function getComputerChoice() {
-            const randomNumber = Math.floor(Math.random() * 3);
-            return choices[randomNumber];
-        }
+    <header>
+        <div class="animation-container">
+            <span class="animate" id="allOptions">ROCK PAPER SCISSORS</span>
+        </div>
+    </header>
 
-        function playRound(playerSelection, computerSelection) {
-            playerSelection = playerSelection.toLowerCase();
-            if (playerSelection === computerSelection) {
-                return 'The match is a tie!';
-            }
-            else if (playerSelection === 'rock' && computerSelection === 'paper') {
-                return 'You lose Paper beats Rock!'
-            }
-            else if (playerSelection === 'paper' && computerSelection === 'scissors') {
-                return 'You lose Scissors beats Paper!'
-            }
-            else if (playerSelection === 'scissors' && computerSelection === 'rock') {
-                return 'You lose Rock beats Scissors!'
-            }
-            else {
-                return `You win ${playerSelection} beats ${computerSelection}`
-            }
-        }
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="scoreboard">
+                    <div class="result-container">
+                        <h2 class="result">Choose your weapon</h2>
+                        <h3 class="result-info">First one to 5 points wins the game.</h3>
+                    </div>
 
-        function isValidChoice(playerSelection) {
-            playerSelection = playerSelection.toLowerCase();
-            validChoices = ['rock', 'paper', 'scissors'];
-            return validChoices.includes(playerSelection);
-        }
+                    <div class="score_card-container">
+                        <div class="score-card player_score-card">
+                            <div class="sign" id="player-sign"><img src="assets/unavailable.svg"
+                                    class="unavailable-sign" alt=""></div>
+                            <div class="score-container">
+                                <div><img src="assets/user.svg" class="playerIcon" alt=""></div>
+                                <h3 class="score" id="playerScore">0</h3>
+                            </div>
+                        </div>
+                        <div class="score-card computer_score-card">
+                            <div class="sign" id="computerSign"><img src="assets/unavailable.svg"
+                                    class="unavailable-sign" alt=""></div>
+                            <div class="score-container">
 
-        function game() {
-            let playerWins = 0;
-            let computerWins = 0;
-            for (i = 0; i < 5; i++) {
-                const playerSelection = prompt('Enter your Choice Rock, Paper or Scissors');
-
-                if(!isValidChoice(playerSelection)) {
-                    alert("Please enter a valid choice")
-                    return
-                }
-                const computerSelection = getComputerChoice();
-                const roundResult = playRound(playerSelection, computerSelection);
-                console.log(roundResult);
-                
-                if(roundResult.includes('You win')) {
-                    playerWins++;
-                }
-                if(roundResult.includes('You lose')) {
-                    computerWins++;
-                }
-            }
-            gameWinner(playerWins, computerWins);
-            return {
-                playerWins, computerWins
-            }
-        }
-
-        game()
-
-
-        function gameWinner(playerWins, computerWins) {
-            if (playerWins > computerWins) {
-                console.log("Rejoice you have won the game!")
-            }
-
-            else if (playerWins === computerWins) {
-                console.log("The game is a tie!")
-            }
-
-            return "Aww you lost the game!"
-        }
-
-    </script>
+                                <div><img src="assets/computer.svg" alt="" class="playerIcon"></div>
+                                <h3 class="score" id="playerScore">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="choice-container">
+                    <div class="button" id="rock">
+                        <img src="assets/rock.svg" class="button-icon" alt="">
+                    </div>
+                    <div class="button" id="paper">
+                        <img src="assets/paper.svg" class="button-icon" alt="">
+                    </div>
+                    <div class="button" id="scissors">
+                        <img src="assets/scissors.svg" class="button-icon" alt="">
+                    </div>
+                </div>
+    </main>
+    </div>
+    </div>
 </body>
 
 </html>
