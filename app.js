@@ -2,9 +2,20 @@ const rockPaperScissors = document.getElementById("allOptions");
 const resultText = document.querySelector(".result");
 const resultInfoText = document.querySelector(".result-info");
 const scoreCardContainer = document.querySelector(".score_card-container");
+const signs = document.querySelectorAll(".sign");
 const choiceContainer = document.querySelector(".choice-container");
 const choices = ["rock", "paper", "scissors"];
 const buttons = document.querySelectorAll(".button");
+const playerScoreElement = document.querySelector("#playerScore");
+const computerScoreElement = document.querySelector("#computerScore");
+const modal = document.querySelector(".modal");
+const gameResult = document.querySelector(".gameResult");
+const playAgainElement = document.querySelector(".playAgain");
+const overlay = document.querySelector(".overlay");
+const playerPoints = document.querySelector(".points");
+const maxScore = 5;
+let playerScore = 0;
+let computerScore = 0;
 
 // Get the initial text content of the result and result-info elements
 const initialResultText = resultText.textContent;
@@ -31,8 +42,7 @@ function typeText(element, text) {
   }, typingSpeed);
 }
 
-// Start the typing animation after the ROCK PAPER SCISSORS animation is complete
-rockPaperScissors.addEventListener("animationend", function () {
+function typeTextAnimation() {
   setTimeout(function () {
     typeText(resultText, initialResultText);
   }, animationDelay);
@@ -43,15 +53,20 @@ rockPaperScissors.addEventListener("animationend", function () {
   setTimeout(function () {
     scoreCardContainer.style.opacity = 1;
     choiceContainer.style.opacity = 1;
-  }, animationDelay + initialResultText.length * typingSpeed + initialResultInfoText.length * typingSpeed + 400); 
-});
+  }, animationDelay +
+    initialResultText.length * typingSpeed +
+    initialResultInfoText.length * typingSpeed +
+    400);
+}
+// Start the typing animation after the ROCK PAPER SCISSORS animation is complete
+rockPaperScissors.addEventListener("animationend", typeTextAnimation);
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     button.style.transform = "scale(0.95)";
-    button.classList.add("clicked")
+    button.classList.add("clicked");
     const playerSelection = button.id;
-    console.log(playerSelection);
+    playRound(playerSelection);
     setTimeout(() => {
       button.style.transform = "scale(1)";
       button.classList.remove("clicked");
@@ -59,25 +74,86 @@ buttons.forEach((button) => {
   });
 });
 
-
-
 function getComputerChoice() {
   const randomNumber = Math.floor(Math.random() * 3);
   return choices[randomNumber];
 }
 
 function playRound(playerSelection) {
-  playerSelection = playerSelection.toLowerCase();
-  const choices = ["rock", "paper", "scissors"];
+  const computerSelection = getComputerChoice();
+  updateSign(playerSelection, computerSelection);
   if (playerSelection === computerSelection) {
-    return "The match is a tie!";
-  } else if (playerSelection === "rock" && computerSelection === "paper") {
-    return "You lose Paper beats Rock!";
-  } else if (playerSelection === "paper" && computerSelection === "scissors") {
-    return "You lose Scissors beats Paper!";
-  } else if (playerSelection === "scissors" && computerSelection === "rock") {
-    return "You lose Rock beats Scissors!";
+    roundResult("It's a tie!", "You both chose the same!");
+  } else if (
+    (playerSelection === "rock" && computerSelection === "paper") ||
+    (playerSelection === "paper" && computerSelection === "scissors") ||
+    (playerSelection === "scissors" && computerSelection === "rock")
+  ) {
+    const result = "You lost!";
+    roundResult(result, `${computerSelection} beats ${playerSelection}`);
+    updateScore(result);
   } else {
-    return `You win ${playerSelection} beats ${computerSelection}`;
+    const result = "You won!";
+    roundResult("You won!", `${playerSelection} beats ${computerSelection}`);
+    updateScore(result);
   }
 }
+
+function updateSign(playerSelection, computerSelection) {
+  const playerSign = document.querySelector("#playerSign");
+  const computerSign = document.querySelector("#computerSign");
+  playerSign.innerHTML = `<img src="assets/${playerSelection}.svg" class="choiceIcon" alt="${playerSelection}">`;
+  computerSign.innerHTML = `<img src="assets/${computerSelection}.svg" class="choiceIcon" alt="${computerSelection}">`;
+}
+
+function roundResult(result, info) {
+  resultText.textContent = result;
+  resultInfoText.textContent = info.charAt(0).toUpperCase() + info.slice(1);
+}
+
+function updateScore(result) {
+  if (result === "You lost!") {
+    computerScore++;
+  } else {
+    playerScore++;
+  }
+  playerScoreElement.textContent = playerScore;
+  computerScoreElement.textContent = computerScore;
+  checkWinner();
+}
+
+function checkWinner() {
+  if (playerScore === maxScore || computerScore === maxScore) {
+    const winner =
+      playerScore === maxScore ? "You won the game!" : "You lost the game!";
+    showPopUp(winner);
+    playerScore = 0;
+    computerScore = 0;
+  }
+}
+
+function showPopUp(winner) {
+  modal.classList.add("active");
+  overlay.classList.add("active");
+  gameResult.textContent = winner;
+  if (winner === "You lost the game!") {
+    playerPoints.textContent = "Your score is: " + playerScore;
+  } else {
+    playerPoints.textContent = "Computer score is: " + computerScore;
+  }
+}
+
+function playAgain() {
+  modal.classList.remove("active");
+  overlay.classList.remove("active");
+  signs.forEach((sign) => {
+    sign.innerHTML = `<img src="assets/unavailable.svg" class="unavailable-sign" alt="">`;
+  });
+  playerScoreElement.textContent = 0;
+  computerScoreElement.textContent = 0;
+  resultText.textContent = "";
+  resultInfoText.textContent = "";
+  typeTextAnimation();
+}
+
+playAgainElement.addEventListener("click", playAgain);
