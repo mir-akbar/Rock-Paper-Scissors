@@ -18,12 +18,8 @@ let playerScore = 0;
 let computerScore = 0;
 
 // Get the initial text content of the result and result-info elements
-const initialResultText = resultText.textContent;
-const initialResultInfoText = resultInfoText.textContent;
-
-// Clear the text content of result and result-info elements
-resultText.textContent = "";
-resultInfoText.textContent = "";
+const initialResultText = "Choose your weapon";
+const initialResultInfoText = "First one to 5 points wins the game.";
 
 const animationDelay = 100;
 const typingSpeed = 100;
