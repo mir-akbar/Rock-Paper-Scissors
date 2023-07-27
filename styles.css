@@ -234,6 +234,14 @@ header {
 
 /* MEDIA QUERIES */
 
+/* MAX-WIDTH: 768px */
+
+@media (max-width: 768px) {
+  .button:not(.clicked):hover {
+    box-shadow: none;
+  }
+}
+
 /* MAX-WIDTH: 640px */
 
 @media screen and (max-width: 640px) {
@@ -270,11 +278,19 @@ header {
   .button-icon {
     width: 130px;
   }
+
+  .button:not(.clicked):hover {
+    box-shadow: none;
+  }
 }
 
 /* MAX-WIDTH: 550px */
 
 @media screen and (max-width: 550px) {
+  .animate {
+    font-size: 3.2rem;
+  }
+
   .result,
   .result-info {
     font-size: 1.7rem;
@@ -294,6 +310,10 @@ header {
 
   .button-icon {
     width: 120px;
+  }
+
+  .button:not(:last-child) {
+    margin-right: 3rem;
   }
 
   .gameResult {
@@ -401,5 +421,3 @@ header {
     font-size: 1.2rem;
   }
 }
-
-
